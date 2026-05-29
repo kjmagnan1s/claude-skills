@@ -12,7 +12,7 @@ Skills are markdown-based playbooks that transform Claude from a general-purpose
 |-------|-------------|
 | [app-store-screenshots](skills/app-store-screenshots/) | Build App Store screenshot pages with Next.js, export at all Apple-required resolutions |
 | [skill-creator](skills/skill-creator/) | Create new skills with the enhanced patterns reference (Q&A gates, strong opinions, anti-patterns, etc.) |
-| [slides](skills/slides/) | Generate animated, on-brand HTML slide decks (16 formats, 5 themes + design.md theming, self-running visual-QA loop). Adapted from [Peter Yang](https://x.com/petergyang/status/2059801947503530365). |
+| [slides](skills/slides/) | Generate animated, on-brand HTML slide decks: 16 formats, 9 themes + design.md theming, charts, presenter mode, PDF export, .pptx import, and a self-running visual-QA loop. Adapted from [Peter Yang](https://x.com/petergyang/status/2059801947503530365). |
 
 ## Installation
 

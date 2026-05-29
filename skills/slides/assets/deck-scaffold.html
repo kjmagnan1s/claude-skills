@@ -165,6 +165,65 @@ body.theme-anthropic{
   --accent-ink-i:#FAF9F5;
 }
 
+/* ---- MIDNIGHT : deep navy, electric cyan, sans (product/tech keynote) ---- */
+body.theme-midnight{
+  --bg:#0B1020;
+  --bg-grad:radial-gradient(1100px 680px at 80% 10%, rgba(91,200,255,.12), transparent 60%);
+  --surface:#141B30; --surface-2:#1C2540;
+  --ink:#EAF1FF; --ink-soft:#8FA0C0;
+  --accent:#5BC8FF; --accent-2:#7AD3FF;
+  --accent-soft:rgba(91,200,255,.15); --accent-ink:#06121F;
+  --border:rgba(234,241,255,.12);
+  --shadow:0 24px 60px -22px rgba(0,0,0,.7); --shadow-soft:0 10px 30px -14px rgba(0,0,0,.6);
+  --font-display:"Inter", system-ui, sans-serif; --display-weight:800; --display-tracking:-0.03em;
+  --bg-i:#EEF3FB; --bg-grad-i:none; --surface-i:#FFFFFF; --surface-2-i:#E3EAF5;
+  --ink-i:#0C1426; --ink-soft-i:rgba(12,20,38,.62); --border-i:rgba(12,20,38,.12); --accent-ink-i:#06121F;
+}
+
+/* ---- MONO : Swiss white/black + one red, sans (minimal, editorial) ---- */
+body.theme-mono{
+  --bg:#FFFFFF; --bg-grad:none;
+  --surface:#F4F4F2; --surface-2:#E9E9E6;
+  --ink:#0A0A0A; --ink-soft:#666663;
+  --accent:#E5482A; --accent-2:#FF6A48;
+  --accent-soft:rgba(229,72,42,.10); --accent-ink:#FFFFFF;
+  --border:rgba(10,10,10,.12);
+  --shadow:0 16px 44px -22px rgba(0,0,0,.30); --shadow-soft:0 6px 20px -12px rgba(0,0,0,.16);
+  --font-display:"Inter", system-ui, sans-serif; --display-weight:800; --display-tracking:-0.035em;
+  --bg-i:#0A0A0A; --bg-grad-i:none; --surface-i:#161616; --surface-2-i:#202020;
+  --ink-i:#FAFAFA; --ink-soft-i:rgba(250,250,250,.6); --border-i:rgba(255,255,255,.14); --accent-ink-i:#FFFFFF;
+}
+
+/* ---- SAGE : oat + forest green, serif (calm, natural, editorial) ---- */
+body.theme-sage{
+  --bg:#F2F1E7; --bg-grad:none;
+  --surface:#FBFAF4; --surface-2:#E7E6D8;
+  --ink:#23241D; --ink-soft:#5E6152;
+  --accent:#4F7A4D; --accent-2:#6E9A5F;
+  --accent-soft:rgba(79,122,77,.14); --accent-ink:#FBFAF4;
+  --border:rgba(35,36,29,.12);
+  --shadow:0 18px 50px -24px rgba(35,36,29,.20); --shadow-soft:0 8px 22px -14px rgba(35,36,29,.14);
+  --font-display:"Fraunces", Georgia, serif; --display-weight:600; --display-tracking:-0.015em;
+  --bg-i:#1A211A; --bg-grad-i:radial-gradient(900px 560px at 28% 18%, rgba(79,122,77,.20), transparent 60%);
+  --surface-i:#243024; --surface-2-i:#2C3A2C;
+  --ink-i:#F2F4EC; --ink-soft-i:rgba(242,244,236,.66); --border-i:rgba(242,244,236,.14); --accent-ink-i:#FBFAF4;
+}
+
+/* ---- PLUM : dark plum + violet, sans (creative, bold, launch) ---- */
+body.theme-plum{
+  --bg:#15101D;
+  --bg-grad:radial-gradient(1100px 680px at 82% 12%, rgba(181,123,255,.14), transparent 62%);
+  --surface:#201829; --surface-2:#2A2035;
+  --ink:#F3ECFB; --ink-soft:#A99BBC;
+  --accent:#B57BFF; --accent-2:#CFA3FF;
+  --accent-soft:rgba(181,123,255,.16); --accent-ink:#190E26;
+  --border:rgba(243,236,251,.12);
+  --shadow:0 26px 64px -22px rgba(0,0,0,.72); --shadow-soft:0 10px 30px -14px rgba(0,0,0,.6);
+  --font-display:"Inter", system-ui, sans-serif; --display-weight:800; --display-tracking:-0.03em;
+  --bg-i:#F6F1FB; --bg-grad-i:none; --surface-i:#FFFFFF; --surface-2-i:#ECE3F3;
+  --ink-i:#1B1226; --ink-soft-i:rgba(27,18,38,.62); --border-i:rgba(27,18,38,.12); --accent-ink-i:#190E26;
+}
+
 /* =========================================================================
    RESET + STAGE
    ========================================================================= */
@@ -588,6 +647,31 @@ body.grid-mode .stage{transform:scale(.34);transform-origin:center;
   width:min(var(--stage-w),90vw)}
 body.grid-mode .deck-dots,body.grid-mode .deck-progress{display:none}
 
+/* PRESENTER MODE (press P) — speaker-notes console: notes + timer + next-slide.
+   Always dark regardless of deck theme, like a real presenter view. Single-window
+   console that toggles over the deck (not a dual-monitor setup). */
+.presenter{position:fixed;inset:0;z-index:100;display:none;
+  grid-template-columns:1.5fr 1fr;grid-template-rows:auto minmax(0,1fr) auto;
+  gap:20px 30px;padding:34px 40px;background:#0B0B0C;color:#F4ECDD;font-family:var(--font-body)}
+body.presenting{overflow:hidden}
+body.presenting .presenter{display:grid}
+.pr-bar{grid-column:1/3;display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid rgba(244,236,221,.16);padding-bottom:14px}
+.pr-bar .lbl{font:700 12px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:rgba(244,236,221,.55)}
+.pr-bar .clock{font:600 28px/1 var(--font-mono)}
+.pr-bar .count{font:600 14px/1 var(--font-mono);color:rgba(244,236,221,.6)}
+.pr-main{min-height:0;display:flex;flex-direction:column}
+.pr-kicker{font:700 12px/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;
+  color:#E0A93B;margin-bottom:12px}
+.pr-title{font-family:var(--font-display);font-size:clamp(26px,3.2vw,44px);line-height:1.1;margin-bottom:20px}
+.pr-notes{font-size:17px;line-height:1.6;color:rgba(244,236,221,.82);overflow:auto;white-space:pre-wrap}
+.pr-next{min-height:0;border:1px solid rgba(244,236,221,.16);border-radius:14px;padding:22px;
+  display:flex;flex-direction:column}
+.pr-next .pr-kicker{color:rgba(244,236,221,.5)}
+.pr-next .nt{font-family:var(--font-display);font-size:clamp(18px,2vw,28px);line-height:1.15;
+  color:rgba(244,236,221,.85)}
+.pr-foot{grid-column:1/3;font:500 12px/1 var(--font-mono);color:rgba(244,236,221,.45);text-align:center}
+
 /* Short-screen / screen-share breakpoints — keep content from clipping on
    laptops, projectors, and Zoom share where vertical space is tight. */
 @media (max-height:700px){
@@ -623,14 +707,14 @@ body.grid-mode .deck-dots,body.grid-mode .deck-progress{display:none}
 <body class="theme-default">
 <div class="deck-progress"></div>
 <nav class="deck-dots" aria-label="slides"></nav>
-<div class="deck-hint">← → to move · G for grid</div>
+<div class="deck-hint">← → move · G grid · P presenter · F fullscreen</div>
 
 <main class="deck">
 
   <!-- 1 · COVER (invert = dark slide for rhythm, like Peter's editorial cover).
        Signature: drifting .aura + .circle-word lasso that draws on. The lasso
        path is the brand mark — keep it identical on the cover and closing. -->
-  <section class="slide invert" data-n="01">
+  <section class="slide invert" data-n="01" data-notes="Open with the pain: slideware is slow and off-brand. The promise — a rough outline becomes a polished deck in minutes. Keep this to ~15 seconds, then move.">
     <div class="aura"></div>
     <div class="stage cover">
       <p class="eyebrow" data-reveal>A /slides deck</p>
@@ -908,6 +992,7 @@ body.grid-mode .deck-dots,body.grid-mode .deck-progress{display:none}
     slides.forEach((s,k)=>s.classList.toggle('is-active',k===i));
     dotEls.forEach((d,k)=>d.classList.toggle('on',k===i));
     bar.style.width=((i+1)/slides.length*100)+'%';
+    if(document.body.classList.contains('presenting'))renderPresenter();
   }
   function go(i){
     i=Math.max(0,Math.min(slides.length-1,i));
@@ -940,6 +1025,8 @@ body.grid-mode .deck-dots,body.grid-mode .deck-progress{display:none}
       case 'Home':ev.preventDefault();go(0);break;
       case 'End':ev.preventDefault();go(slides.length-1);break;
       case 'g':case 'G':toggleGrid(true);break;
+      case 'p':case 'P':togglePresenter(!document.body.classList.contains('presenting'));break;
+      case 'Escape':if(document.body.classList.contains('presenting'))togglePresenter(false);break;
       case 'f':case 'F':if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();break;
     }
   });
@@ -1025,6 +1112,33 @@ body.grid-mode .deck-dots,body.grid-mode .deck-progress{display:none}
   }
   function hx(h){h=h.replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');
     return [0,2,4].map(i=>parseInt(h.substr(i,2),16));}
+
+  /* presenter mode — notes + elapsed timer + next-slide preview (press P) */
+  const pr=document.createElement('div');pr.className='presenter';
+  pr.innerHTML='<div class="pr-bar"><span class="lbl">Presenter</span><span class="clock">00:00</span><span class="count"></span></div>'
+    +'<div class="pr-main"><div class="pr-kicker">Now speaking</div><div class="pr-title"></div><div class="pr-notes"></div></div>'
+    +'<div class="pr-next"><div class="pr-kicker">Next up</div><div class="nt"></div></div>'
+    +'<div class="pr-foot">P exit presenter · ← → change slide</div>';
+  document.body.appendChild(pr);
+  const prTitle=pr.querySelector('.pr-title'),prNotes=pr.querySelector('.pr-notes'),
+        prNext=pr.querySelector('.nt'),prClock=pr.querySelector('.clock'),prCount=pr.querySelector('.count');
+  let prTimer=null,prStart=0;
+  function slideTitle(s){const h=s&&s.querySelector('h1,h2');return h?h.textContent.trim():'Slide';}
+  function renderPresenter(){
+    const s=slides[current];
+    prTitle.textContent=slideTitle(s);
+    prNotes.textContent=(s.dataset.notes||'').trim()||'No speaker notes for this slide. Add data-notes="…" to the section.';
+    prNext.textContent=current+1<slides.length?slideTitle(slides[current+1]):'— End of deck —';
+    prCount.textContent=(current+1)+' / '+slides.length;
+  }
+  function togglePresenter(on){
+    document.body.classList.toggle('presenting',on);
+    if(on){
+      prStart=performance.now();renderPresenter();
+      prTimer=setInterval(()=>{const t=Math.floor((performance.now()-prStart)/1000);
+        prClock.textContent=String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');},250);
+    }else if(prTimer){clearInterval(prTimer);prTimer=null;}
+  }
 
   /* boot */
   setActive(0); runSlide(slides[0]);

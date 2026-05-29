@@ -1,6 +1,6 @@
 ---
 name: slides
-description: Create a beautiful, animated HTML slide deck. Use when the user wants to make a presentation, pitch deck, talk slides, board deck, conference talk, client deck, or any "slides" — or invokes /slides. Guides them through content and brand style, generates one self-contained HTML file with 16 slide formats and 5 themes, runs a visual QA pass, and can theme to any design.md (personal, Slalom, or the awesome-design-md library).
+description: Create a beautiful, animated HTML slide deck. Use when the user wants to make a presentation, pitch deck, talk slides, board deck, conference talk, client deck, or any "slides" — or invokes /slides. Guides them through content and brand style, generates one self-contained HTML file with 16 slide formats and 9 themes, animations, charts, presenter mode, and PDF export; runs a visual QA pass; can theme to any design.md (personal, Slalom, or the awesome-design-md library) or import an existing .pptx.
 ---
 
 # Slides
@@ -11,7 +11,8 @@ framework. From nothing to first draft in minutes, then iterate.
 
 **Credit:** Adapted from Peter Yang's `/slides` skill
 ([@petergyang](https://x.com/petergyang/status/2059801947503530365)), extended here
-with 16 formats, a 5-theme + design.md theming system, and a self-running visual-QA loop.
+with 16 formats, a 9-theme + design.md theming system, presenter mode, PDF export,
+.pptx import, and a self-running visual-QA loop.
 
 **Why HTML decks:** zero-to-draft in minutes, live interactive charts, drop-in
 images, subtle animations on every reveal, brand-locked typography, and a visual
@@ -22,10 +23,11 @@ QA loop the agent runs on itself. The whole deck is one shareable `.html` file.
 - `assets/deck-scaffold.html` — the engine + full CSS framework + **a live gallery
   of all 16 formats** under the default theme. Copy this and trim it down.
 - `references/slide-formats.md` — the 16 formats, content limits, image rules.
-- `references/templates.md` — the 5 themes + the token "format contract."
+- `references/templates.md` — the 9 themes, the theme picker, + the token "format contract."
 - `references/animations.md` — the motion toolkit and per-format cheat sheet.
 - `references/design-md-ingestion.md` — derive a theme from any design.md (Slalom etc.).
-- `scripts/render_slides.py` — the visual-QA renderer (Playwright).
+- `scripts/render_slides.py` — the visual-QA renderer + PDF export (Playwright).
+- `scripts/pptx_to_outline.py` — lift content out of an existing .pptx to rebuild on-brand.
 
 Read `references/*` as needed during the relevant step — don't preload everything.
 
@@ -41,10 +43,10 @@ the pool. Do not start building until answered.
    Options: *I have content to paste* · *Just a topic — help me outline it*
 2. **Length** — "How many slides?"
    Options: *Short (5–8)* · *Medium (10–15)* · *Long (20+)*
-3. **Theme** — "Which look?"
-   Options: *Default (warm editorial)* · *Dark* · *Light* · *Kevin (personal brand)*
-   · *Anthropic* · *From a design.md / brand*
-   (If they pick a design.md/brand, ask for the path or brand name and follow
+3. **Theme** — "Which look?" There are **9 built-in themes** — don't list all of
+   them. Use the **theme picker in `templates.md`** to offer the 3–4 best fits for
+   this deck's topic/audience, plus a *From a design.md / brand* option. (If they
+   pick a design.md/brand, ask for the path or brand name and follow
    `design-md-ingestion.md`.)
 
 ### Pick ONE more (by context)
@@ -58,6 +60,12 @@ If they chose **"I have content to paste,"** wait for the paste before continuin
 If they ask to **see the themes first**, generate one-slide preview files (one per
 candidate theme) in `output/slide-previews/`, open them, and let them pick before
 building the full deck.
+
+If the user points you at an existing **`.pptx`**, lift its content first:
+`python3 ~/.claude/skills/slides/scripts/pptx_to_outline.py --pptx <file>` (needs
+`pip install python-pptx`). Treat the returned outline (titles, bullets, notes) as
+the content, map it onto the formats, and rebuild on-brand — don't reproduce
+PowerPoint styling.
 
 ### Derived from answers (decide yourself, do NOT ask)
 - **Which formats to use** and their order — map the content to the format menu in
@@ -100,14 +108,14 @@ placeholder and tell the user it needs a real number.
 <deck>.html
 ├── <head>
 │   ├── Google Fonts <link>  +  Chart.js (with SRI) — the only external deps
-│   └── <style>: tokens (:root) · 5 themes · .slide.invert · layout · 16 format
-│       component blocks · reveal/stagger/draw-line/float animations · nav chrome
+│   └── <style>: tokens (:root) · 9 themes · .slide.invert · layout · 16 format
+│       component blocks · reveal/stagger/draw-line/float animations · nav + presenter chrome
 ├── <body class="theme-X">
 │   ├── .deck-progress · .deck-dots · .deck-hint   (nav UI)
-│   └── <main class="deck"> → <section class="slide [invert]" data-n="NN"> × N
+│   └── <main class="deck"> → <section class="slide [invert]" data-n="NN" [data-notes]> × N
 └── <script>: nav (keys/scroll/dots) · IntersectionObserver → .is-active ·
-    count-up (0→target or data-from→target) · progress-fill · Chart.js init ·
-    grid overview (G) · fullscreen (F)
+    count-up (0→target or data-from→target) · progress-fill · Chart.js (value labels) ·
+    grid overview (G) · presenter mode + notes (P) · fullscreen (F)
 ```
 Single file. No routing, no extra assets except images the user supplies.
 
@@ -174,8 +182,13 @@ text overflow, overlapping elements, low contrast, captions caught mid-animation
 - `open output/slides/<deck-name>.html` so the user can view it.
 - One-line QA summary ("rendered 12 slides, fixed 3 overflow + 1 contrast issue,
   re-verified clean").
-- Mention: customize colors by editing the `:root` / `body.theme-*` tokens at the
-  top; navigate with arrows / space / scroll, `G` for grid overview, `F` fullscreen.
+- Mention controls: arrows / space / scroll to move; `G` grid overview, `F`
+  fullscreen, `P` **presenter mode** (speaker notes + timer + next slide — add notes
+  with `data-notes="…"` on a `<section class="slide">`). Customize colors via the
+  `:root` / `body.theme-*` tokens.
+- Offer a shareable **PDF**: `python3 ~/.claude/skills/slides/scripts/render_slides.py
+  --html output/slides/<deck-name>.html --pdf` (writes `<deck-name>.pdf`, one
+  landscape page per slide).
 - Delete `output/slides/qa/` images if no longer needed.
 
 ---

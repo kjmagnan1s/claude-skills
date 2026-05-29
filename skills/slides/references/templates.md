@@ -11,7 +11,7 @@ one class.
 Set the body class. That's the entire switch:
 
 ```html
-<body class="theme-default">   <!-- or theme-dark / theme-light / theme-kevin / theme-anthropic -->
+<body class="theme-default">   <!-- default·dark·light·kevin·anthropic·midnight·mono·sage·plum, or a design.md theme -->
 ```
 
 ## The token contract
@@ -38,7 +38,7 @@ a token so the deck themes automatically.
 closing render on the theme's dark (or contrasting) palette. Every component
 re-themes for free.
 
-## The 5 built-in themes
+## The 9 built-in themes
 
 | Theme | Mood | Bg | Accent | Display font |
 |-------|------|----|--------|--------------|
@@ -47,11 +47,35 @@ re-themes for free.
 | `light` | Apple-clean, minimal | white | blue `#2D6CDF` | Inter (sans, 800) |
 | `kevin` | Kevin's personal brand | ink `#0E0D0C` | signal orange `#FF5A1F` | Fraunces 900 (serif) |
 | `anthropic` | Parchment + terracotta, warm-neutral, editorial | parchment `#F5F4ED` | terracotta `#C96442` | Newsreader (serif, wt 500) |
+| `midnight` | Product/tech keynote | deep navy `#0B1020` | electric cyan `#5BC8FF` | Inter (sans, 800) |
+| `mono` | Swiss, minimal, high-contrast | white | signal red `#E5482A` | Inter (sans, 800) |
+| `sage` | Calm, natural, editorial | oat `#F2F1E7` | forest green `#4F7A4D` | Fraunces (serif) |
+| `plum` | Creative, bold, launch | dark plum `#15101D` | violet `#B57BFF` | Inter (sans, 800) |
+
+## Theme picker — by intent
+
+Use this to auto-suggest 3–4 best-fit themes in the Step 1 question (don't list all 9).
+Map the deck's topic, audience, and desired tone:
+
+| If the deck is… | Reach for |
+|-----------------|-----------|
+| Editorial / thought-leadership / warm | `default`, `sage`, `anthropic` |
+| Developer / product / tech keynote | `midnight`, `dark`, `mono` |
+| Executive / board / corporate | `light`, `mono`, `anthropic` |
+| Anthropic / Claude subject matter | `anthropic` |
+| Creative / launch / high-energy | `plum`, `kevin`, `dark` |
+| Minimal / data-forward / no-frills | `mono`, `light` |
+| Kevin's personal byline | `kevin` |
+| A specific company brand | a `design.md` (see `design-md-ingestion.md`) |
+
+**Base (light vs dark):** light-bg themes (`default`, `light`, `anthropic`, `mono`,
+`sage`) invert their cover/quote/code/closing to a dark slide; dark-bg themes
+(`dark`, `kevin`, `midnight`, `plum`) invert to a light slide. Either way the deck
+gets light/dark rhythm for free.
 
 Notes:
-- `default`, `kevin`, `anthropic` use **serif** display; `dark`, `light` use **sans**.
-- Light-bg themes (`default`, `light`, `anthropic`) invert to a dark slide; dark-bg
-  themes (`dark`, `kevin`) invert to a light/paper slide for contrast rhythm.
+- **Serif** display: `default`, `kevin`, `anthropic`, `sage`. **Sans**: `dark`,
+  `light`, `midnight`, `mono`, `plum`.
 - **`anthropic`** is mapped from the canonical Claude design system
   (`awesome-design-md/claude/DESIGN.md` + Anthropic brand specs): Parchment canvas
   `#F5F4ED`, Ivory cards `#FAF9F5`, terracotta brand `#C96442` (CTA/accent only),
